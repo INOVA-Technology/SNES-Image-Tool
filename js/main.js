@@ -76,6 +76,8 @@ var ctx = easel.getContext("2d");
 
 var pixelScale = 1;
 
+var tile_pos_x = 0;
+var tile_pos_y = 0;
 for (var i = 0; i < pixels.length; i++) {
 	var tile = pixels[i];
 	for (var j = 0; j < tile.length; j++) {
@@ -88,21 +90,16 @@ for (var i = 0; i < pixels.length; i++) {
 			id.data[2] = colors[pixel][2];
 			id.data[3] = 255;
 
-			var x = Math.floor(i/2) * 8 * pixelScale;
-			x += k * pixelScale;
-
-			var y = j * pixelScale;
-			if (i % 2 !== 0) {
-				y += 8 * pixelScale;
-			}
-			
-			// var x = ijk * 8 * pixelScale;
-			// var y = ijky * 8 * pixelScale;
-			// x += k * pixelScale;
-			// y += 8 * pixelScale;
+			var x = tile_pos_x * 8 * pixelScale + k * pixelScale;
+			var y = tile_pos_y * 8 * pixelScale + j * pixelScale;
 			
 			ctx.putImageData(id, x, y);
 		}
+	}
+	tile_pos_x++;
+	if (tile_pos_x === 14) {
+		tile_pos_x = 0;
+		tile_pos_y++;
 	}
 }
 
