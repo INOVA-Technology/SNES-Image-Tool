@@ -14,6 +14,7 @@ canvas#editor {
     width: 98%;
     height: 400px;
     padding: 5px;
+	font-family: monospace;
 }
 
 /* Section Code */

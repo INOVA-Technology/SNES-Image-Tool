@@ -97,7 +97,7 @@ for (var i = 0; i < pixels.length; i++) {
 		}
 	}
 	tile_pos_x++;
-	if (tile_pos_x === 14) {
+	if (tile_pos_x === 16) {
 		tile_pos_x = 0;
 		tile_pos_y++;
 	}
