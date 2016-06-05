@@ -42,8 +42,7 @@ canvas.addEventListener("mousedown", function() { isClickingOnCanvas = true; });
 canvas.addEventListener("mouseup", function() { isClickingOnCanvas = false; });
 canvas.addEventListener("mouseleave", function() { isClickingOnCanvas = false; });
 
-canvas.addEventListener("mousemove", function(e) {
-	if (!isClickingOnCanvas) { return }
+function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
 	var startX = Math.floor(coords.x / pixelSize) * pixelSize;
 	var startY = Math.floor(coords.y / pixelSize) * pixelSize;
@@ -52,17 +51,14 @@ canvas.addEventListener("mousemove", function(e) {
 	ctx.rect(startX, startY, pixelSize, pixelSize);
 	ctx.fillStyle = "black";
 	ctx.fill();
+}
+
+canvas.addEventListener("mousemove", function(e) {
+	if (isClickingOnCanvas) { drawPixelWithEvent(e); }
 });
 
 canvas.addEventListener("click", function(e) {
-	var coords = getMouseCoords(canvas, e);
-	var startX = Math.floor(coords.x / pixelSize) * pixelSize;
-	var startY = Math.floor(coords.y / pixelSize) * pixelSize;
-
-	ctx.beginPath();
-	ctx.rect(startX, startY, pixelSize, pixelSize);
-	ctx.fillStyle = "black";
-	ctx.fill();
+	drawPixelWithEvent(e);
 });
 
 
