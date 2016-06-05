@@ -36,6 +36,24 @@ function getMouseCoords(canvas, e) {
 	}
 }
 
+var isClickingOnCanvas = false;
+
+canvas.addEventListener("mousedown", function() { isClickingOnCanvas = true; });
+canvas.addEventListener("mouseup", function() { isClickingOnCanvas = false; });
+canvas.addEventListener("mouseleave", function() { isClickingOnCanvas = false; });
+
+canvas.addEventListener("mousemove", function(e) {
+	if (!isClickingOnCanvas) { return }
+	var coords = getMouseCoords(canvas, e);
+	var startX = Math.floor(coords.x / pixelSize) * pixelSize;
+	var startY = Math.floor(coords.y / pixelSize) * pixelSize;
+
+	ctx.beginPath();
+	ctx.rect(startX, startY, pixelSize, pixelSize);
+	ctx.fillStyle = "black";
+	ctx.fill();
+});
+
 canvas.addEventListener("click", function(e) {
 	var coords = getMouseCoords(canvas, e);
 	var startX = Math.floor(coords.x / pixelSize) * pixelSize;
@@ -46,5 +64,6 @@ canvas.addEventListener("click", function(e) {
 	ctx.fillStyle = "black";
 	ctx.fill();
 });
+
 
 

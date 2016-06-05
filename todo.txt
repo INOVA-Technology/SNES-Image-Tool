@@ -1,5 +1,4 @@
 Image Creator:
-	allow dragging to draw
 	add a way to change the color
 	click a pixel again to erase it and/or add an erase mode
 	differentiate between the transparent background and the color white
