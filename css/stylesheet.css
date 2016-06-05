@@ -1,4 +1,53 @@
+/* General Crap  */
+
+html {
+    font-family: futura;
+}
+
+/* End of General Crap */
+
 canvas#editor {
 	border: 1px solid black;
+}
+
+#img-code {
+    width: 98%;
+    height: 400px;
+    padding: 5px;
+}
+
+/* Section Code */
+
+section {
+    width: 80%;
+    height: 75%;
+    margin: auto;
+    padding: 10px;
+}
+
+section#header {
+    text-align: center;
+}
+
+div#viewer {
+    width: 50%;
+    float: left;
+}
+
+div#edit {
+    text-align: right;
+}
+
+/* End of Section Code */
+
+/* Styling for headers */
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    text-align: left;
+	border-bottom: 1px solid black;
 }
 

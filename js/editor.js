@@ -49,7 +49,10 @@ function drawPixelWithEvent(e) {
 
 	ctx.beginPath();
 	ctx.rect(startX, startY, pixelSize, pixelSize);
-	ctx.fillStyle = "black";
+	if($('#black').is(':checked')) { ctx.fillStyle = "black"; }
+	if($('#blue').is(':checked')) { ctx.fillStyle = "blue"; }
+	if($('#red').is(':checked')) { ctx.fillStyle = "red"; }
+	if($('#green').is(':checked')) { ctx.fillStyle = "green"; }
 	ctx.fill();
 }
 

@@ -102,9 +102,3 @@ for (var i = 0; i < pixels.length; i++) {
 		tile_pos_y++;
 	}
 }
-
-
-
-
-
-

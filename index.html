@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	<link rel="stylesheet" href="css/stylesheet.css">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 </head>
 <body>
-
-	<textarea id="img-code" name="" cols="30" rows="10">
+    <section id="header">
+        <h1>SNES Image Viewer</h1>
+    </section>
+    <section>
+        <div id="viewer">
+        <h2>Image Viewer</h2>
+            <canvas id="easel"></canvas>
+            <textarea id="img-code" name="" cols="30" rows="10">
 ; Created with eKid's pcx2snes converter ;
 
 UntitledData:
@@ -47,13 +54,22 @@ UntitledPalette:
 
 ; 30 tiles (2 spaces)
 ; 480 bytes
-	</textarea>
-	
-	<canvas id="easel"></canvas>
+            </textarea>
+        </div>
+        <div id="edit">
+            <h2>Editor</h2>
+            <br>
+            <form>
+                <input id="black" type="radio" name="color" value="black" checked="checked">Black</input>
+                <input id="blue" type="radio" name="color" value="blue">Blue</input>
+                <input id="red" type="radio" name="color" value="blue">Red</input>
+                <input id="green" type="radio" name="color" value="blue">Green</input>
+            </form>
+            <canvas id="editor"></canvas>
+        </div>
 
-	<canvas id="editor"></canvas>
-
-	<script src="js/viewer.js"></script>
-	<script src="js/editor.js"></script>
+    </section>
+    <script src="js/viewer.js"></script>
+    <script src="js/editor.js"></script>
 </body>
 </html>
