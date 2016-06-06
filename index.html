@@ -7,14 +7,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 </head>
 <body>
-    <section id="header">
-        <h1>SNES Image Viewer</h1>
-    </section>
-    <section>
-        <div id="viewer">
-        <h2>Image Viewer</h2>
-            <canvas id="easel"></canvas>
-            <textarea id="img-code" name="" cols="30" rows="10">
+
+	<div class="container">
+
+		<section id="header">
+			<h1>SNES Image Viewer</h1>
+		</section>
+
+		<form class="pick-view">
+			<label for="show-img-editor">Image Viewer</label>
+			<input name="show-what" id="show-img-viewer" type="radio" checked>
+			<label for="show-img-editor">Image Editor</label>
+			<input name="show-what" id="show-img-editor" type="radio">
+		</form>
+
+		<section id="img-viewer" class="widget img-viewer">
+			<h2>Image Viewer</h2>
+			<canvas id="easel"></canvas>
+			<textarea id="img-code" name="" cols="30" rows="10">
 ; Created with eKid's pcx2snes converter ;
 
 UntitledData:
@@ -54,22 +64,51 @@ UntitledPalette:
 
 ; 30 tiles (2 spaces)
 ; 480 bytes
-            </textarea>
-        </div>
-        <div id="edit">
-            <h2>Editor</h2>
-            <br>
-            <form>
-                <input id="black" type="radio" name="color" value="black" checked="checked">Black</input>
-                <input id="blue" type="radio" name="color" value="blue">Blue</input>
-                <input id="red" type="radio" name="color" value="blue">Red</input>
-                <input id="green" type="radio" name="color" value="blue">Green</input>
-            </form>
-            <canvas id="editor"></canvas>
-        </div>
+			</textarea>
+		</section>
+		<section id="img-editor" class="widget img-editor">
+			<div id="edit">
+				<h2>Editor</h2>
+				<br>
+				<form>
+					<input id="black" type="radio" name="color" value="black" checked="checked">Black</input>
+					<input id="blue" type="radio" name="color" value="blue">Blue</input>
+					<input id="red" type="radio" name="color" value="blue">Red</input>
+					<input id="green" type="radio" name="color" value="blue">Green</input>
+				</form>
+				<canvas id="editor"></canvas>
 
-    </section>
-    <script src="js/viewer.js"></script>
-    <script src="js/editor.js"></script>
+				<h4>Add a color to the color palett</h4>
+				<p>Coming soon</p>
+				<button></button>
+
+			</div>
+		</section>
+
+	</div>
+
+	<script src="js/viewer.js"></script>
+	<script src="js/editor.js"></script>
+	<script>
+
+	function showImgViewer(bool) {
+		if (bool) {
+			viewer.hidden = false
+			editor.hidden = true
+		} else {
+			viewer.hidden = true
+			editor.hidden = false
+		}
+	}
+
+	var showViewer = document.getElementById("show-img-viewer");
+	var showEditor = document.getElementById("show-img-editor");
+	var viewer = document.getElementById("img-viewer");
+	var editor = document.getElementById("img-editor");
+	showImgViewer(showViewer.checked);
+	showViewer.addEventListener("change", function() { showImgViewer(showViewer.checked) });
+	showEditor.addEventListener("change", function() { showImgViewer(showViewer.checked) });
+
+	</script>
 </body>
 </html>
