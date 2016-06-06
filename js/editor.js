@@ -54,14 +54,21 @@ canvas.addEventListener("mousedown", function() { isClickingOnCanvas = true; });
 canvas.addEventListener("mouseup", function() { isClickingOnCanvas = false; });
 canvas.addEventListener("mouseleave", function() { isClickingOnCanvas = false; });
 
+var canRedrawCheckbox = document.getElementById("canRedraw");
+var canRedraw = canRedrawCheckbox.checked;
+canRedrawCheckbox.addEventListener("change", function() {
+	canRedraw = canRedrawCheckbox.checked;
+});
+
 var colorPalette = ["black", "blue", "red", "green"]
 
 function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
 
 	var xCoord = Math.floor(coords.x / pixelSize)
-	var startX = xCoord * pixelSize;
 	var yCoord = Math.floor(coords.y / pixelSize)
+	if (!canRedraw && pixelsDrawn[xCoord][yCoord] !== null) { return }
+	var startX = xCoord * pixelSize;
 	var startY = yCoord * pixelSize;
 
 	var checkedColor = document.querySelector("input[name='color']:checked").value;

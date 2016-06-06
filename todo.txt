@@ -5,4 +5,6 @@ Image Creator:
 	save pixel data/drawing in HTML5 local storage?
 	add @media stuff in css for smaller screens 
 	add a way to change the pixel editor size and crap
+	add a to-scall preview of the drawing
+	add a way to change cursor size when drawing (requires a custom cursor)
 
