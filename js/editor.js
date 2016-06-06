@@ -10,6 +10,18 @@ var ctx = editor.getContext("2d");
 // the editors width and height should be divisible by pixelSize
 var pixelSize = 20;
 
+var pixelsDrawn = [];
+var pixelsX = editor.width / pixelSize;
+var pixelsY = editor.height / pixelSize;
+for (var i = 0; i < pixelsY; i++) {
+	var row = [];
+	for (var j = 0; j < pixelsX; j++) {
+		// null is transparent, 0 is color 0, 1 is color 1, etc...
+		row.push(null);
+	}
+	pixelsDrawn.push(row);
+}
+
 for (var x = pixelSize; x < editor.width; x += pixelSize) {
 	ctx.beginPath();
 	ctx.moveTo(x, 0);
@@ -42,18 +54,26 @@ canvas.addEventListener("mousedown", function() { isClickingOnCanvas = true; });
 canvas.addEventListener("mouseup", function() { isClickingOnCanvas = false; });
 canvas.addEventListener("mouseleave", function() { isClickingOnCanvas = false; });
 
+var colorPalette = ["black", "blue", "red", "green"]
+
 function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
-	var startX = Math.floor(coords.x / pixelSize) * pixelSize;
-	var startY = Math.floor(coords.y / pixelSize) * pixelSize;
+
+	var xCoord = Math.floor(coords.x / pixelSize)
+	var startX = xCoord * pixelSize;
+	var yCoord = Math.floor(coords.y / pixelSize)
+	var startY = yCoord * pixelSize;
+
+	var checkedColor = document.querySelector("input[name='color']:checked").value;
+	var colorNum = parseInt(checkedColor, 10);
+	var color = colorPalette[colorNum];
 
 	ctx.beginPath();
 	ctx.rect(startX, startY, pixelSize, pixelSize);
-	if($('#black').is(':checked')) { ctx.fillStyle = "black"; }
-	if($('#blue').is(':checked')) { ctx.fillStyle = "blue"; }
-	if($('#red').is(':checked')) { ctx.fillStyle = "red"; }
-	if($('#green').is(':checked')) { ctx.fillStyle = "green"; }
+	ctx.fillStyle = color;
 	ctx.fill();
+
+	pixelsDrawn[xCoord][yCoord] = colorNum;
 }
 
 canvas.addEventListener("mousemove", function(e) {

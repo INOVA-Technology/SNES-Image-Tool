@@ -1,6 +1,6 @@
 Image Creator:
-	add a way to change the color
-	click a pixel again to erase it and/or add an erase mode
+	add a way to change/modify the color palette
+	click a pixel again to erase it and/or add an erase mode (ya or nah?)
 	differentiate between the transparent background and the color white
 	save pixel data/drawing in HTML5 local storage?
 	add @media stuff in css for smaller screens 
