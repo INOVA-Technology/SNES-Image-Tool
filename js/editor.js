@@ -60,7 +60,39 @@ canRedrawCheckbox.addEventListener("change", function() {
 	canRedraw = canRedrawCheckbox.checked;
 });
 
-var colorPalette = ["black", "blue", "red", "green"]
+
+// i just picked aritrary colors for these, I'm aware they look bad
+var colorPalette = ["black", "blue", "red", "green", "orange", "tomato", "#555555", "#888888",
+	"#123456", "#98764", "#112131", "#124349", "#beeeef", "#144114", "#515115", "magenta"];
+
+function addEventListenerToLabel(l, span) {
+	l.addEventListener("keyup", function() {
+		var num = parseInt(l.attributes.for.value.split("-")[1], 10);
+		colorPalette[num] = l.textContent;
+		span.style.backgroundColor = l.textContent;
+		for (var x = 0; x < pixelsDrawn.length; x++) {
+			for (var y = 0; y < pixelsDrawn[x].length; y++) {
+				if (pixelsDrawn[x][y] === num) {
+					console.log(num);
+					drawPixel(x, y, l.textContent);
+				}
+			}
+		}
+	});
+}
+
+var picker = document.getElementById("color-picker");
+var label_count = 0;
+for (var i = 0; i < picker.children.length; i++) {
+	var c = picker.children[i];
+	if ("label" == c.tagName.toLowerCase()) {
+		var color = colorPalette[label_count++];
+		c.textContent = color;
+		var span = picker.children[i+1];
+		span.style.backgroundColor = color;
+		addEventListenerToLabel(c, span);
+	}
+}
 
 function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
@@ -81,6 +113,15 @@ function drawPixelWithEvent(e) {
 	ctx.fill();
 
 	pixelsDrawn[xCoord][yCoord] = colorNum;
+}
+
+function drawPixel(x, y, color) {
+	var startX = x * pixelSize;
+	var startY = y * pixelSize;
+	ctx.beginPath();
+	ctx.rect(startX, startY, pixelSize, pixelSize);
+	ctx.fillStyle = color;
+	ctx.fill();
 }
 
 canvas.addEventListener("mousemove", function(e) {
