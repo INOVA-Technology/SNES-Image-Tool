@@ -62,8 +62,9 @@ canRedrawCheckbox.addEventListener("change", function() {
 
 
 // i just picked aritrary colors for these, I'm aware they look bad
-var colorPalette = ["black", "blue", "red", "green", "orange", "tomato", "#555555", "#888888",
-	"#123456", "#98764", "#112131", "#124349", "#beeeef", "#144114", "#515115", "magenta"];
+//var colorPalette = ["black", "blue", "red", "green", "orange", "tomato", "#555555", "#888888",
+	//"#123456", "#98764", "#112131", "#124349", "#beeeef", "#144114", "#515115", "magenta"];
+var colorPalette = ["white", "blue", "red", "green"];
 
 function addEventListenerToLabel(l, span) {
 	l.addEventListener("keyup", function() {
@@ -132,5 +133,27 @@ canvas.addEventListener("click", function(e) {
 	drawPixelWithEvent(e);
 });
 
+function padNumber(n, zeros) {
+	let str = "";
+	const count = zeros - n.length;
+	for (let i = 0; i < count; i++) {
+		str += "0";
+	}
+	return str + n;
+}
+
+// currently broken/not done
+function exportImage() {
+	let imageData = "";
+	for (let y = 0; y < pixelsDrawn.length; y++) {
+		const row = pixelsDrawn[y];
+		for (let x = 0; x < row.length; x++) {
+			row.reduce(function(daByte, pixel) {
+
+				return daByte;
+			}, ["", ""]);
+		}
+	}
+}
 
 
