@@ -70,64 +70,48 @@ UntitledPalette:
 			<div id="edit">
 				<h2>Editor</h2>
 				<br>
-				<form id="color-picker">
-					<input id="color-0" type="radio" name="color" value="0" checked>
-					<label for="color-0" contenteditable="true"></label>
-					<span id="color-view-0" class="color-view"></span>
-					<input id="color-1" type="radio" name="color" value="1">
-					<label for="color-1" contenteditable="true"></label>
-					<span id="color-view-1" class="color-view"></span>
-					<input id="color-2" type="radio" name="color" value="2">
-					<label for="color-2" contenteditable="true"></label>
-					<span id="color-view-2" class="color-view"></span>
-					<input id="color-3" type="radio" name="color" value="3">
-					<label for="color-3" contenteditable="true"></label>
-					<span id="color-view-3" class="color-view"></span>
-					<!--<input id="color-4" type="radio" name="color" value="4">-->
-					<!--<label for="color-4" contenteditable="true"></label>-->
-					<!--<span id="color-view-4" class="color-view"></span>-->
-					<!--<input id="color-5" type="radio" name="color" value="5">-->
-					<!--<label for="color-5" contenteditable="true"></label>-->
-					<!--<span id="color-view-5" class="color-view"></span>-->
-					<!--<input id="color-6" type="radio" name="color" value="6">-->
-					<!--<label for="color-6" contenteditable="true"></label>-->
-					<!--<span id="color-view-6" class="color-view"></span>-->
-					<!--<input id="color-7" type="radio" name="color" value="7">-->
-					<!--<label for="color-7" contenteditable="true"></label>-->
-					<!--<span id="color-view-7" class="color-view"></span>-->
-					<!--<input id="color-8" type="radio" name="color" value="8">-->
-					<!--<label for="color-8" contenteditable="true"></label>-->
-					<!--<span id="color-view-8" class="color-view"></span>-->
-					<!--<input id="color-9" type="radio" name="color" value="9">-->
-					<!--<label for="color-9" contenteditable="true"></label>-->
-					<!--<span id="color-view-9" class="color-view"></span>-->
-					<!--<input id="color-10" type="radio" name="color" value="10">-->
-					<!--<label for="color-10" contenteditable="true"></label>-->
-					<!--<span id="color-view-10" class="color-view"></span>-->
-					<!--<input id="color-11" type="radio" name="color" value="11">-->
-					<!--<label for="color-11" contenteditable="true"></label>-->
-					<!--<span id="color-view-11" class="color-view"></span>-->
-					<!--<input id="color-12" type="radio" name="color" value="12">-->
-					<!--<label for="color-12" contenteditable="true"></label>-->
-					<!--<span id="color-view-12" class="color-view"></span>-->
-					<!--<input id="color-13" type="radio" name="color" value="13">-->
-					<!--<label for="color-13" contenteditable="true"></label>-->
-					<!--<span id="color-view-13" class="color-view"></span>-->
-					<!--<input id="color-14" type="radio" name="color" value="14">-->
-					<!--<label for="color-14" contenteditable="true"></label>-->
-					<!--<span id="color-view-14" class="color-view"></span>-->
-					<!--<input id="color-15" type="radio" name="color" value="15">-->
-					<!--<label for="color-15" contenteditable="true"></label>-->
-					<!--<span id="color-view-15" class="color-view"></span>-->
-				</form>
-				<canvas id="editor"></canvas>
-				<br>
-				<label for="canRedraw">Allow redrawing over pixels already filled in</label>
-				<input type="checkbox" id="canRedraw" checked>
 
-				<h4>Add a color to the color palette</h4>
-				<p>Coming soon</p>
-				<button></button>
+				<div class="easel">
+					<canvas id="editor"></canvas>
+					<br>
+					<label for="canRedraw">Allow redrawing over pixels already filled in</label>
+					<input type="checkbox" id="canRedraw" checked>
+					
+					<h4>Add a color to the color palette</h4>
+					<p>Coming soon</p>
+					<button></button>
+				</div>
+
+				<div class="color-pallete">
+					<form id="color-picker">
+						<ul>
+							<li>
+								<input id="color-0" type="radio" name="color" value="0" checked>
+								<label for="color-0" id="color-label-0" contenteditable="true"></label>
+								<input id="colorz-yo-0" type="color">
+								<span id="color-view-0" class="color-view"></span>
+							</li>
+							<li>
+								<input id="color-1" type="radio" name="color" value="1">
+								<label for="color-1" id="color-label-1" contenteditable="true"></label>
+								<input id="colorz-yo-1" type="color">
+								<span id="color-view-1" class="color-view"></span>
+							</li>
+							<li>
+								<input id="color-2" type="radio" name="color" value="2">
+								<label for="color-2" id="color-label-2" contenteditable="true"></label>
+								<input id="colorz-yo-2" type="color">
+								<span id="color-view-2" class="color-view"></span>
+							</li>
+							<li>
+								<input id="color-3" type="radio" name="color" value="3">
+								<label for="color-3" id="color-label-3" contenteditable="true"></label>
+								<input id="colorz-yo-3" type="color">
+								<span id="color-view-3" class="color-view"></span>
+							</li>
+						</ul>
+					</form>
+				</div>
 
 			</div>
 		</section>

@@ -17,7 +17,7 @@ for (var i = 0; i < pixelsY; i++) {
 	var row = [];
 	for (var j = 0; j < pixelsX; j++) {
 		// null is transparent, 0 is color 0, 1 is color 1, etc...
-		row.push(null);
+		row.push(0);
 	}
 	pixelsDrawn.push(row);
 }
@@ -64,35 +64,23 @@ canRedrawCheckbox.addEventListener("change", function() {
 // i just picked aritrary colors for these, I'm aware they look bad
 //var colorPalette = ["black", "blue", "red", "green", "orange", "tomato", "#555555", "#888888",
 	//"#123456", "#98764", "#112131", "#124349", "#beeeef", "#144114", "#515115", "magenta"];
-var colorPalette = ["white", "blue", "red", "green"];
 
-function addEventListenerToLabel(l, span) {
-	l.addEventListener("keyup", function() {
-		var num = parseInt(l.attributes.for.value.split("-")[1], 10);
-		colorPalette[num] = l.textContent;
-		span.style.backgroundColor = l.textContent;
-		for (var x = 0; x < pixelsDrawn.length; x++) {
-			for (var y = 0; y < pixelsDrawn[x].length; y++) {
-				if (pixelsDrawn[x][y] === num) {
-					console.log(num);
-					drawPixel(x, y, l.textContent);
-				}
-			}
-		}
+//.db $FF, $12, $55, $55, $87, $34, $0F, $FF
+var colorPalette = ["#ffffff", "#0000ff", "#ff0000", "#00ff00"];
+
+for (let i = 0; i < colorPalette.length; i++) {
+	const e = document.getElementById("color-view-" + i.toString());
+	e.style.backgroundColor = colorPalette[i];
+	const l = document.getElementById("color-label-" + i.toString());
+	l.textContent = colorPalette[i];
+	const c = document.getElementById("colorz-yo-" + i.toString());
+	c.value = colorPalette[i];
+	c.addEventListener("change", function() {
+		colorPalette[i] = c.value;
+		l.textContent = colorPalette[i];
+		e.style.backgroundColor = colorPalette[i];
+		drawTodosLosPixels();
 	});
-}
-
-var picker = document.getElementById("color-picker");
-var label_count = 0;
-for (var i = 0; i < picker.children.length; i++) {
-	var c = picker.children[i];
-	if ("label" == c.tagName.toLowerCase()) {
-		var color = colorPalette[label_count++];
-		c.textContent = color;
-		var span = picker.children[i+1];
-		span.style.backgroundColor = color;
-		addEventListenerToLabel(c, span);
-	}
 }
 
 function drawPixelWithEvent(e) {
@@ -123,6 +111,14 @@ function drawPixel(x, y, color) {
 	ctx.rect(startX, startY, pixelSize, pixelSize);
 	ctx.fillStyle = color;
 	ctx.fill();
+}
+
+function drawTodosLosPixels() {
+	for (let x = 0; x < pixelsDrawn.length; x++) {
+		for (let y = 0; y < pixelsDrawn[x].length; y++) {
+			drawPixel(x, y, colorPalette[pixelsDrawn[x][y]]);
+		}
+	}
 }
 
 canvas.addEventListener("mousemove", function(e) {
