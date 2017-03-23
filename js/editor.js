@@ -2,8 +2,8 @@
 
 var editor = document.getElementById("editor");
 var canvas = editor;
-editor.width = 400;
-editor.height = 400;
+editor.width = 320;
+editor.height = 320;
 
 var ctx = editor.getContext("2d");
 
@@ -135,25 +135,73 @@ canvas.addEventListener("click", function(e) {
 
 function padNumber(n, zeros) {
 	let str = "";
-	const count = zeros - n.length;
+	const nStr = n.toString();
+	const count = zeros - nStr.length;
 	for (let i = 0; i < count; i++) {
 		str += "0";
 	}
-	return str + n;
+	return str + nStr;
 }
 
 // currently broken/not done
 function exportImage() {
-	let imageData = "";
+	let chunks = [];
 	for (let y = 0; y < pixelsDrawn.length; y++) {
-		const row = pixelsDrawn[y];
-		for (let x = 0; x < row.length; x++) {
-			row.reduce(function(daByte, pixel) {
+		let ary = [];
+		for (let x = 0; x < pixelsDrawn[0].length / 4; x++) {
+			ary.push("");
+		}
+		chunks.push(ary)
+	}
 
-				return daByte;
-			}, ["", ""]);
+	for (let y = 0; y < pixelsDrawn.length; y++) {
+		for (let x = 0; x < pixelsDrawn[0].length; x++) {
+			const col = Math.floor(x / 8);
+			const row = y;
+			let colorNum = pixelsDrawn[x][y];
+			if (colorNum === null) colorNum = 0;
+
+			const bits = padNumber(colorNum.toString(2), 2).split("");
+			chunks[row][col * 2] += bits[1];
+			chunks[row][col * 2 + 1] += bits[0];
+
+			
+			//row.reduce(function(daByte, pixel) {
+				//const binColorNum = padNumber(pixel, 2);
+				//return daByte;
+			//}, ["", ""]);
 		}
 	}
-}
 
+	console.log(chunks.length);
+
+	let imageData = "";
+	for (let yy = 0; yy < chunks.length; yy += 8) {
+		for (let x = 0; x < chunks[0].length; x += 2) {
+			imageData += ".db ";
+			for (let y = 0; y < 8; y++) {
+				imageData += "$" + padNumber(parseInt(chunks[y + yy][x], 2).toString(16), 2) + ", ";
+				imageData += "$" + padNumber(parseInt(chunks[y + yy][x + 1], 2).toString(16), 2) + ", ";
+			}
+			imageData = imageData.slice(0, imageData.length - 2);
+			imageData += "\n";
+		}
+	}
+	//for (let y = 0; y < pixelsDrawn[0].length; y += 8) {
+		//for (let x = 0; x < pixelsDrawn[0].length; x += 2) {
+			//imageData += ".db ";
+			//for (let yy = 0; yy < 8; yy++) {
+				//imageData += "$" + padNumber(parseInt(chunks[y][x], 2).toString(16), 2) + ", ";
+				//imageData += "$" + padNumber(parseInt(chunks[y][x + 1], 2).toString(16), 2) + ", ";
+			//}
+			//imageData = imageData.slice(0, imageData.length - 2);
+			//imageData += "\n";
+		//}
+	//}
+
+	return imageData;
+}
+//exportImage();
+
+// 
 
