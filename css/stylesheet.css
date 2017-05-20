@@ -59,11 +59,25 @@ h2 {
 
 .easel, .color-pallete {
 	float: left;
-	width: 50%;
 }
 
-.color-pallete li input {
-	/*display: inline-block;*/
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.color-picker {
+	position: relative;
+	top: 6px;
+}
+
+.color-pallete ul {
+	list-style: none;
+}
+
+.color-pallete li label {
+	font-family: monospace;
 }
 
 .color-pallete input[type=color] {

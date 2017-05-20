@@ -71,9 +71,51 @@ UntitledPalette:
 				<h2>Editor</h2>
 				<br>
 
-				<div class="easel">
-					<canvas id="editor"></canvas>
-					<br>
+				<div class="group">
+					<div class="easel">
+						<canvas id="editor"></canvas>
+					</div>
+					<div class="color-pallete">
+						<form id="color-picker">
+							<ul>
+								<li>
+									<input id="color-0" type="radio" name="color" value="0" checked>
+									<label for="color-0" id="color-label-0"></label>
+									<span class="color-picker">
+										<input id="colorz-yo-0" type="color">
+										<span id="color-view-0" class="color-view"></span>
+									</span>
+								</li>
+								<li>
+									<input id="color-1" type="radio" name="color" value="1">
+									<label for="color-1" id="color-label-1"></label>
+									<span class="color-picker">
+										<input id="colorz-yo-1" type="color">
+										<span id="color-view-1" class="color-view"></span>
+									</span>
+								</li>
+								<li>
+									<input id="color-2" type="radio" name="color" value="2">
+									<label for="color-2" id="color-label-2"></label>
+									<span class="color-picker">
+										<input id="colorz-yo-2" type="color">
+										<span id="color-view-2" class="color-view"></span>
+									</span>
+								</li>
+								<li>
+									<input id="color-3" type="radio" name="color" value="3">
+									<label for="color-3" id="color-label-3"></label>
+									<span class="color-picker">
+										<input id="colorz-yo-3" type="color">
+										<span id="color-view-3" class="color-view"></span>
+									</span>
+								</li>
+							</ul>
+						</form>
+					</div><!-- end .color-pallete -->
+				</div>
+
+				<div class="controls">
 					<label for="canRedraw">Allow redrawing over pixels already filled in</label>
 					<input type="checkbox" id="canRedraw" checked>
 					
@@ -82,38 +124,7 @@ UntitledPalette:
 					<button></button>
 				</div>
 
-				<div class="color-pallete">
-					<form id="color-picker">
-						<ul>
-							<li>
-								<input id="color-0" type="radio" name="color" value="0" checked>
-								<label for="color-0" id="color-label-0" contenteditable="true"></label>
-								<input id="colorz-yo-0" type="color">
-								<span id="color-view-0" class="color-view"></span>
-							</li>
-							<li>
-								<input id="color-1" type="radio" name="color" value="1">
-								<label for="color-1" id="color-label-1" contenteditable="true"></label>
-								<input id="colorz-yo-1" type="color">
-								<span id="color-view-1" class="color-view"></span>
-							</li>
-							<li>
-								<input id="color-2" type="radio" name="color" value="2">
-								<label for="color-2" id="color-label-2" contenteditable="true"></label>
-								<input id="colorz-yo-2" type="color">
-								<span id="color-view-2" class="color-view"></span>
-							</li>
-							<li>
-								<input id="color-3" type="radio" name="color" value="3">
-								<label for="color-3" id="color-label-3" contenteditable="true"></label>
-								<input id="colorz-yo-3" type="color">
-								<span id="color-view-3" class="color-view"></span>
-							</li>
-						</ul>
-					</form>
-				</div>
-
-			</div>
+			</div><!-- end #edit -->
 		</section>
 
 	</div>
@@ -124,11 +135,11 @@ UntitledPalette:
 
 	function showImgViewer(bool) {
 		if (bool) {
-			viewer.hidden = false
-			editor.hidden = true
+			viewer.hidden = false;
+			editor.hidden = true;
 		} else {
-			viewer.hidden = true
-			editor.hidden = false
+			viewer.hidden = true;
+			editor.hidden = false;
 		}
 	}
 
@@ -139,6 +150,9 @@ UntitledPalette:
 	showImgViewer(showViewer.checked);
 	showViewer.addEventListener("change", function() { showImgViewer(showViewer.checked) });
 	showEditor.addEventListener("change", function() { showImgViewer(showViewer.checked) });
+
+	// remove this:
+	showImgViewer(false);
 
 	</script>
 </body>

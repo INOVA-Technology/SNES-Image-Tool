@@ -1,9 +1,10 @@
 "use strict";
 
 var editor = document.getElementById("editor");
-var canvas = editor;
-editor.width = 320;
-editor.height = 320;
+let canvas = editor;
+let canvasSize = { width: 320, height: 320 };
+//editor.width = canvasSize.width;
+//editor.height = canvasSize.height;
 
 var ctx = editor.getContext("2d");
 
@@ -11,8 +12,9 @@ var ctx = editor.getContext("2d");
 var pixelSize = 20;
 
 var pixelsDrawn = [];
-var pixelsX = editor.width / pixelSize;
-var pixelsY = editor.height / pixelSize;
+
+var pixelsX = canvasSize.width / pixelSize;
+var pixelsY = canvasSize.height / pixelSize;
 for (var i = 0; i < pixelsY; i++) {
 	var row = [];
 	for (var j = 0; j < pixelsX; j++) {
@@ -22,23 +24,43 @@ for (var i = 0; i < pixelsY; i++) {
 	pixelsDrawn.push(row);
 }
 
-for (var x = pixelSize; x < editor.width; x += pixelSize) {
-	ctx.beginPath();
-	ctx.moveTo(x, 0);
-	ctx.lineTo(x, editor.height);
-	ctx.lineWidth = 1;
-	ctx.strokeStyle = "gray";
-	ctx.stroke();
+function isRetinaDisplay() {
+	if (window.matchMedia) {
+		const mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
+		return (mq && mq.matches || (window.devicePixelRatio > 1)); 
+	}
 }
 
-for (var y = pixelSize; y < editor.width; y += pixelSize) {
-	ctx.beginPath();
-	ctx.moveTo(0, y);
-	ctx.lineTo(editor.width, y);
-	ctx.lineWidth = 1;
-	ctx.strokeStyle = "gray";
-	ctx.stroke();
+const canvasScale = isRetinaDisplay() ? 2 : 1;
+
+canvas.width = canvasSize.width * canvasScale;
+canvas.height = canvasSize.height * canvasScale;
+canvas.style.width = `${canvasSize.width}px`;
+canvas.style.height = `${canvasSize.height}px`;
+ctx.scale(canvasScale, canvasScale);
+
+function drawGrid() {
+	for (let x = pixelSize; x < canvasSize.width; x += pixelSize) {
+		ctx.beginPath();
+		ctx.moveTo(x, 0);
+		ctx.lineTo(x, canvasSize.height);
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "gray";
+		ctx.stroke();
+	}
+
+	for (let y = pixelSize; y < canvasSize.width; y += pixelSize) {
+		ctx.beginPath();
+		ctx.moveTo(0, y);
+		ctx.lineTo(canvasSize.width, y);
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = "gray";
+		ctx.stroke();
+	}
+	console.log("heh?");
 }
+
+drawGrid();
 
 function getMouseCoords(canvas, e) {
 	var rect = canvas.getBoundingClientRect();
@@ -86,8 +108,8 @@ for (let i = 0; i < colorPalette.length; i++) {
 function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
 
-	var xCoord = Math.floor(coords.x / pixelSize)
-	var yCoord = Math.floor(coords.y / pixelSize)
+	var xCoord = Math.floor(coords.x / canvasScale / pixelSize)
+	var yCoord = Math.floor(coords.y / canvasScale / pixelSize)
 	if (!canRedraw && pixelsDrawn[xCoord][yCoord] !== null) { return }
 	var startX = xCoord * pixelSize;
 	var startY = yCoord * pixelSize;
@@ -101,6 +123,8 @@ function drawPixelWithEvent(e) {
 	ctx.fillStyle = color;
 	ctx.fill();
 
+	drawPixelBoundry(xCoord, yCoord);
+
 	pixelsDrawn[xCoord][yCoord] = colorNum;
 }
 
@@ -113,12 +137,27 @@ function drawPixel(x, y, color) {
 	ctx.fill();
 }
 
+function drawPixelBoundry(x, y) {
+	ctx.beginPath();
+	ctx.moveTo(x * pixelSize, y * pixelSize);
+	ctx.lineTo((x + 1) * pixelSize, y * pixelSize);
+	ctx.lineTo((x + 1) * pixelSize, (y + 1) * pixelSize);
+	ctx.lineTo(x * pixelSize, (y + 1) * pixelSize);
+	ctx.lineTo(x * pixelSize, y * pixelSize);
+
+	ctx.lineWidth = 1;
+	ctx.strokeStyle = "gray";
+	ctx.stroke();
+}
+
 function drawTodosLosPixels() {
+	ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
 	for (let x = 0; x < pixelsDrawn.length; x++) {
 		for (let y = 0; y < pixelsDrawn[x].length; y++) {
 			drawPixel(x, y, colorPalette[pixelsDrawn[x][y]]);
 		}
 	}
+	drawGrid();
 }
 
 canvas.addEventListener("mousemove", function(e) {
