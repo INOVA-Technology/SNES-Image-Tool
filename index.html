@@ -121,6 +121,10 @@ UntitledPalette:
 					<label for="canRedraw">Allow redrawing over pixels already filled in</label>
 					<input type="checkbox" id="canRedraw" checked>
 					
+					<br>
+					<button id="save-drawing">Save Drawing</button>
+					<span id="work-saved">it's saved y'all</span>
+					<span id="work-unsaved">nope</span>
 					<!--<h4>Add a color to the color palette</h4>-->
 					<!--<p>Coming soon</p>-->
 					<!--<button></button>-->
@@ -131,26 +135,38 @@ UntitledPalette:
 
 	</div>
 
+	<script src="js/settings.js"></script>
 	<script src="js/viewer.js"></script>
 	<script src="js/editor.js"></script>
 	<script>
-
-	// todo: also update the ratio, incase this is called w/o it being pressed
-	function showImgViewer(bool) {
-		if (bool) {
-			viewer.hidden = false;
-			editor.hidden = true;
-		} else {
-			viewer.hidden = true;
-			editor.hidden = false;
-		}
-	}
 
 	var showViewer = document.getElementById("show-img-viewer");
 	var showEditor = document.getElementById("show-img-editor");
 	var viewer = document.getElementById("img-viewer");
 	var editor = document.getElementById("img-editor");
-	showImgViewer(showViewer.checked);
+
+	function showImgViewer(bool) {
+		if (bool) {
+			viewer.hidden = false;
+			editor.hidden = true;
+			showViewer.checked = true;
+			showEditor.checked = false;
+			setSetting("lastTab", "viewer");
+		} else {
+			viewer.hidden = true;
+			editor.hidden = false;
+			showEditor.checked = true;
+			showViewer.checked = false;
+			setSetting("lastTab", "editor");
+		}
+	}
+
+	if (getSetting("lastTab") === "editor") {
+		showImgViewer(false);
+	} else {
+		showImgViewer(true);
+	}
+
 	showViewer.addEventListener("change", function() { showImgViewer(showViewer.checked) });
 	showEditor.addEventListener("change", function() { showImgViewer(showViewer.checked) });
 

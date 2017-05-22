@@ -7,20 +7,31 @@ let displayedCanvasSize = { width: 320, height: 320 };
 var ctx = editor.getContext("2d");
 
 // the editors width and height should be divisible by pixelSize
-var pixelSize = 20;
+const pixelSize = 20;
+const pixelsX = displayedCanvasSize.width / pixelSize;
+const pixelsY = displayedCanvasSize.height / pixelSize;
 
-var pixelsDrawn = [];
-
-var pixelsX = displayedCanvasSize.width / pixelSize;
-var pixelsY = displayedCanvasSize.height / pixelSize;
-for (var i = 0; i < pixelsY; i++) {
-	var row = [];
-	for (var j = 0; j < pixelsX; j++) {
-		// null is transparent, 0 is color 0, 1 is color 1, etc...
-		row.push(0);
-	}
-	pixelsDrawn.push(row);
+const savedStatus = document.getElementById("work-saved");
+const unsavedStatus = document.getElementById("work-unsaved");
+let drawingIsSaved;
+function updateSavedStatus(bool) {
+	drawingIsSaved = bool;
+	unsavedStatus.hidden = drawingIsSaved;
+	savedStatus.hidden = !drawingIsSaved;
 }
+updateSavedStatus(true);
+
+let pixelsDrawn = getSetting("drawing", function() {
+	let pixelsDrawn = [];
+	for (let i = 0; i < pixelsY; i++) {
+		let row = [];
+		for (let j = 0; j < pixelsX; j++) {
+			row.push(0);
+		}
+		pixelsDrawn.push(row);
+	}
+	return pixelsDrawn;
+});
 
 function isRetinaDisplay() {
 	if (window.matchMedia) {
@@ -105,6 +116,7 @@ for (let i = 0; i < colorPalette.length; i++) {
 	});
 }
 
+// todo: use `drawPixel'
 function drawPixelWithEvent(e) {
 	var coords = getMouseCoords(canvas, e);
 
@@ -124,6 +136,10 @@ function drawPixelWithEvent(e) {
 	ctx.fill();
 
 	drawPixelBoundry(xCoord, yCoord);
+
+	if (drawingIsSaved && pixelsDrawn[xCoord][yCoord] !== colorNum) {
+		updateSavedStatus(false);
+	}
 
 	pixelsDrawn[xCoord][yCoord] = colorNum;
 }
@@ -167,6 +183,8 @@ canvas.addEventListener("mousemove", function(e) {
 canvas.addEventListener("click", function(e) {
 	drawPixelWithEvent(e);
 });
+
+drawTodosLosPixels();
 
 function padNumber(n, zeros) {
 	let str = "";
@@ -239,5 +257,10 @@ function exportImage() {
 }
 //exportImage();
 
-// 
+const saveButton = document.getElementById("save-drawing");
+saveButton.addEventListener("click", function() {
+	// todo: save color palette too
+	updateSavedStatus(true)
+	setSetting("drawing", pixelsDrawn);
+});
 
