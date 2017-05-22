@@ -2,9 +2,7 @@
 
 var editor = document.getElementById("editor");
 let canvas = editor;
-let canvasSize = { width: 320, height: 320 };
-//editor.width = canvasSize.width;
-//editor.height = canvasSize.height;
+let displayedCanvasSize = { width: 320, height: 320 };
 
 var ctx = editor.getContext("2d");
 
@@ -13,8 +11,8 @@ var pixelSize = 20;
 
 var pixelsDrawn = [];
 
-var pixelsX = canvasSize.width / pixelSize;
-var pixelsY = canvasSize.height / pixelSize;
+var pixelsX = displayedCanvasSize.width / pixelSize;
+var pixelsY = displayedCanvasSize.height / pixelSize;
 for (var i = 0; i < pixelsY; i++) {
 	var row = [];
 	for (var j = 0; j < pixelsX; j++) {
@@ -33,26 +31,28 @@ function isRetinaDisplay() {
 
 const canvasScale = isRetinaDisplay() ? 2 : 1;
 
-canvas.width = canvasSize.width * canvasScale;
-canvas.height = canvasSize.height * canvasScale;
-canvas.style.width = `${canvasSize.width}px`;
-canvas.style.height = `${canvasSize.height}px`;
+// if the device has retina display, `canvas.width' and `canvas.height'
+// will be twice the size of `displayedCanvasSize' 
+canvas.width = displayedCanvasSize.width * canvasScale;
+canvas.height = displayedCanvasSize.height * canvasScale;
+canvas.style.width = `${displayedCanvasSize.width}px`;
+canvas.style.height = `${displayedCanvasSize.height}px`;
 ctx.scale(canvasScale, canvasScale);
 
 function drawGrid() {
-	for (let x = pixelSize; x < canvasSize.width; x += pixelSize) {
+	for (let x = pixelSize; x < displayedCanvasSize.width; x += pixelSize) {
 		ctx.beginPath();
 		ctx.moveTo(x, 0);
-		ctx.lineTo(x, canvasSize.height);
+		ctx.lineTo(x, displayedCanvasSize.height);
 		ctx.lineWidth = 1;
 		ctx.strokeStyle = "gray";
 		ctx.stroke();
 	}
 
-	for (let y = pixelSize; y < canvasSize.width; y += pixelSize) {
+	for (let y = pixelSize; y < displayedCanvasSize.height; y += pixelSize) {
 		ctx.beginPath();
 		ctx.moveTo(0, y);
-		ctx.lineTo(canvasSize.width, y);
+		ctx.lineTo(displayedCanvasSize.width, y);
 		ctx.lineWidth = 1;
 		ctx.strokeStyle = "gray";
 		ctx.stroke();
@@ -110,7 +110,7 @@ function drawPixelWithEvent(e) {
 
 	var xCoord = Math.floor(coords.x / canvasScale / pixelSize)
 	var yCoord = Math.floor(coords.y / canvasScale / pixelSize)
-	if (!canRedraw && pixelsDrawn[xCoord][yCoord] !== null) { return }
+	if (!canRedraw && pixelsDrawn[xCoord][yCoord] !== 0) { return }
 	var startX = xCoord * pixelSize;
 	var startY = yCoord * pixelSize;
 
@@ -151,7 +151,7 @@ function drawPixelBoundry(x, y) {
 }
 
 function drawTodosLosPixels() {
-	ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+	ctx.clearRect(0, 0, displayedCanvasSize.width, displayedCanvasSize.height);
 	for (let x = 0; x < pixelsDrawn.length; x++) {
 		for (let y = 0; y < pixelsDrawn[x].length; y++) {
 			drawPixel(x, y, colorPalette[pixelsDrawn[x][y]]);
@@ -179,6 +179,7 @@ function padNumber(n, zeros) {
 }
 
 // currently broken/not done
+// wait, is that still true?
 function exportImage() {
 	let chunks = [];
 	for (let y = 0; y < pixelsDrawn.length; y++) {

@@ -1,6 +1,5 @@
 Image Creator:
-	allow redrawing button is broken, can't draw if not checked
-	save pixel data/drawing in HTML5 local storage?
+	save pixel data/drawing and settings in HTML5 local storage?
 	add @media stuff in css for smaller screens 
 	add a way to change the pixel editor size and crap
 	add a to-scall preview of the drawing

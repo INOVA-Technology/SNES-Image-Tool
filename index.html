@@ -76,6 +76,7 @@ UntitledPalette:
 						<canvas id="editor"></canvas>
 					</div>
 					<div class="color-pallete">
+						<h3 class="current-color-heading">Current color</h3>
 						<form id="color-picker">
 							<ul>
 								<li>
@@ -85,6 +86,7 @@ UntitledPalette:
 										<input id="colorz-yo-0" type="color">
 										<span id="color-view-0" class="color-view"></span>
 									</span>
+									(background)
 								</li>
 								<li>
 									<input id="color-1" type="radio" name="color" value="1">
@@ -119,9 +121,9 @@ UntitledPalette:
 					<label for="canRedraw">Allow redrawing over pixels already filled in</label>
 					<input type="checkbox" id="canRedraw" checked>
 					
-					<h4>Add a color to the color palette</h4>
-					<p>Coming soon</p>
-					<button></button>
+					<!--<h4>Add a color to the color palette</h4>-->
+					<!--<p>Coming soon</p>-->
+					<!--<button></button>-->
 				</div>
 
 			</div><!-- end #edit -->
@@ -133,6 +135,7 @@ UntitledPalette:
 	<script src="js/editor.js"></script>
 	<script>
 
+	// todo: also update the ratio, incase this is called w/o it being pressed
 	function showImgViewer(bool) {
 		if (bool) {
 			viewer.hidden = false;
@@ -150,9 +153,6 @@ UntitledPalette:
 	showImgViewer(showViewer.checked);
 	showViewer.addEventListener("change", function() { showImgViewer(showViewer.checked) });
 	showEditor.addEventListener("change", function() { showImgViewer(showViewer.checked) });
-
-	// remove this:
-	showImgViewer(false);
 
 	</script>
 </body>

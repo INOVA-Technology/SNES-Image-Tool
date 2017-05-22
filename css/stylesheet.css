@@ -48,6 +48,10 @@ h2 {
 	border-bottom: 1px solid black;
 }
 
+h3.current-color-heading {
+	margin-top: 0;
+}
+
 /* misc (rename/organize this or something) */
 
 .color-view {
@@ -72,8 +76,13 @@ h2 {
 	top: 6px;
 }
 
+.color-pallete {
+	margin: 0 50px;
+}
+
 .color-pallete ul {
 	list-style: none;
+	padding: 0;
 }
 
 .color-pallete li label {
