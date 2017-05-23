@@ -68,6 +68,18 @@ canvas.addEventListener("click", (e) => {
 	drawPixelWithEvent(e);
 });
 
+const exportButton = document.getElementById("export-image");
+exportButton.addEventListener("click", () => {
+	const imageData = exportImage();
+	const downloader = document.createElement("a");
+	downloader.href = URL.createObjectURL(new Blob([imageData], { type: 'text' }));
+	downloader.download = "image.inc";
+
+	document.body.appendChild(downloader);
+	downloader.click();
+	document.body.removeChild(downloader);
+});
+
 let colorPalette = ["#ffffff", "#0000ff", "#ff0000", "#00ff00"];
 for (let i = 0; i < colorPalette.length; i++) {
 	const e = document.getElementById("color-view-" + i.toString());

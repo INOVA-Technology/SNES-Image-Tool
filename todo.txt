@@ -1,11 +1,11 @@
 Image Creator:
 	save color palette in local storage
-	spell palette correctly everywhere
+	export the color palette with the image
 	use `drawPixel' in `drawPixelWithEvent'
 	fix bug when drawing on tiles on the edge of the canvas (the border of the canvas becomes to thick there)
 	change the save/unsaved messages
 	add @media stuff in css for smaller screens 
 	add a way to change the pixel editor size and crap
-	add a to-scall preview of the drawing
+	add a to-scale preview of the drawing
 	add a way to change cursor size when drawing (requires a custom cursor)
 
