@@ -61,7 +61,7 @@ h3.current-color-heading {
 	border: 1px solid black;
 }
 
-.easel, .color-pallete {
+.easel, .color-palette {
 	float: left;
 }
 
@@ -76,20 +76,20 @@ h3.current-color-heading {
 	top: 6px;
 }
 
-.color-pallete {
+.color-palette {
 	margin: 0 50px;
 }
 
-.color-pallete ul {
+.color-palette ul {
 	list-style: none;
 	padding: 0;
 }
 
-.color-pallete li label {
+.color-palette li label {
 	font-family: monospace;
 }
 
-.color-pallete input[type=color] {
+.color-palette input[type=color] {
 	position: absolute;
 	width: 20px;
 	height: 20px;

@@ -1,9 +1,7 @@
 Image Creator:
 	save color palette in local storage
 	spell palette correctly everywhere
-	clean up js/editor.js
 	use `drawPixel' in `drawPixelWithEvent'
-	fully update to ECMA6 (use let/const everywhere)
 	fix bug when drawing on tiles on the edge of the canvas (the border of the canvas becomes to thick there)
 	change the save/unsaved messages
 	add @media stuff in css for smaller screens 

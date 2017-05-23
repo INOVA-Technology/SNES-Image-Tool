@@ -1,27 +1,54 @@
 "use strict";
 
-var editor = document.getElementById("editor");
-let canvas = editor;
-let displayedCanvasSize = { width: 320, height: 320 };
+const canvas = document.getElementById("editor");
+const ctx = editor.getContext("2d");
 
-var ctx = editor.getContext("2d");
+const displayedCanvasSize = { width: 320, height: 320 };
 
-// the editors width and height should be divisible by pixelSize
+// the canvas's width and height should be divisible by pixelSize
 const pixelSize = 20;
 const pixelsX = displayedCanvasSize.width / pixelSize;
 const pixelsY = displayedCanvasSize.height / pixelSize;
 
+const canRedrawCheckbox = document.getElementById("canRedraw");
+let canRedraw = canRedrawCheckbox.checked;
+canRedrawCheckbox.addEventListener("change", () => {
+	canRedraw = canRedrawCheckbox.checked;
+});
+
+
 const savedStatus = document.getElementById("work-saved");
 const unsavedStatus = document.getElementById("work-unsaved");
+const saveButton = document.getElementById("save-drawing");
 let drawingIsSaved;
+saveButton.addEventListener("click", () => {
+	// todo: save color palette too
+	updateSavedStatus(true)
+	setSetting("drawing", pixelsDrawn);
+});
+
+const canvasScale = isRetinaDisplay() ? 2 : 1;
+
+// if the device has retina display, `canvas.width' and `canvas.height'
+// will be twice the size of `displayedCanvasSize' 
+canvas.width = displayedCanvasSize.width * canvasScale;
+canvas.height = displayedCanvasSize.height * canvasScale;
+canvas.style.width = `${displayedCanvasSize.width}px`;
+canvas.style.height = `${displayedCanvasSize.height}px`;
+ctx.scale(canvasScale, canvasScale);
+
 function updateSavedStatus(bool) {
 	drawingIsSaved = bool;
 	unsavedStatus.hidden = drawingIsSaved;
 	savedStatus.hidden = !drawingIsSaved;
 }
-updateSavedStatus(true);
 
-let pixelsDrawn = getSetting("drawing", function() {
+let isClickingOnCanvas = false;
+canvas.addEventListener("mousedown", () => { isClickingOnCanvas = true; });
+canvas.addEventListener("mouseup", () => { isClickingOnCanvas = false; });
+canvas.addEventListener("mouseleave", () => { isClickingOnCanvas = false; });
+
+let pixelsDrawn = getSetting("drawing", () => {
 	let pixelsDrawn = [];
 	for (let i = 0; i < pixelsY; i++) {
 		let row = [];
@@ -33,22 +60,29 @@ let pixelsDrawn = getSetting("drawing", function() {
 	return pixelsDrawn;
 });
 
-function isRetinaDisplay() {
-	if (window.matchMedia) {
-		const mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
-		return (mq && mq.matches || (window.devicePixelRatio > 1)); 
-	}
+canvas.addEventListener("mousemove", (e) => {
+	if (isClickingOnCanvas) { drawPixelWithEvent(e); }
+});
+
+canvas.addEventListener("click", (e) => {
+	drawPixelWithEvent(e);
+});
+
+let colorPalette = ["#ffffff", "#0000ff", "#ff0000", "#00ff00"];
+for (let i = 0; i < colorPalette.length; i++) {
+	const e = document.getElementById("color-view-" + i.toString());
+	e.style.backgroundColor = colorPalette[i];
+	const l = document.getElementById("color-label-" + i.toString());
+	l.textContent = colorPalette[i];
+	const c = document.getElementById("colorz-yo-" + i.toString());
+	c.value = colorPalette[i];
+	c.addEventListener("change", () => {
+		colorPalette[i] = c.value;
+		l.textContent = colorPalette[i];
+		e.style.backgroundColor = colorPalette[i];
+		drawTodosLosPixels();
+	});
 }
-
-const canvasScale = isRetinaDisplay() ? 2 : 1;
-
-// if the device has retina display, `canvas.width' and `canvas.height'
-// will be twice the size of `displayedCanvasSize' 
-canvas.width = displayedCanvasSize.width * canvasScale;
-canvas.height = displayedCanvasSize.height * canvasScale;
-canvas.style.width = `${displayedCanvasSize.width}px`;
-canvas.style.height = `${displayedCanvasSize.height}px`;
-ctx.scale(canvasScale, canvasScale);
 
 function drawGrid() {
 	for (let x = pixelSize; x < displayedCanvasSize.width; x += pixelSize) {
@@ -71,64 +105,19 @@ function drawGrid() {
 	console.log("heh?");
 }
 
-drawGrid();
-
-function getMouseCoords(canvas, e) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: (e.clientX-rect.left)/(rect.right-rect.left)*canvas.width,
-		y: (e.clientY-rect.top)/(rect.bottom-rect.top)*canvas.height
-	}
-}
-
-var isClickingOnCanvas = false;
-
-canvas.addEventListener("mousedown", function() { isClickingOnCanvas = true; });
-canvas.addEventListener("mouseup", function() { isClickingOnCanvas = false; });
-canvas.addEventListener("mouseleave", function() { isClickingOnCanvas = false; });
-
-var canRedrawCheckbox = document.getElementById("canRedraw");
-var canRedraw = canRedrawCheckbox.checked;
-canRedrawCheckbox.addEventListener("change", function() {
-	canRedraw = canRedrawCheckbox.checked;
-});
-
-
-// i just picked aritrary colors for these, I'm aware they look bad
-//var colorPalette = ["black", "blue", "red", "green", "orange", "tomato", "#555555", "#888888",
-	//"#123456", "#98764", "#112131", "#124349", "#beeeef", "#144114", "#515115", "magenta"];
-
-//.db $FF, $12, $55, $55, $87, $34, $0F, $FF
-var colorPalette = ["#ffffff", "#0000ff", "#ff0000", "#00ff00"];
-
-for (let i = 0; i < colorPalette.length; i++) {
-	const e = document.getElementById("color-view-" + i.toString());
-	e.style.backgroundColor = colorPalette[i];
-	const l = document.getElementById("color-label-" + i.toString());
-	l.textContent = colorPalette[i];
-	const c = document.getElementById("colorz-yo-" + i.toString());
-	c.value = colorPalette[i];
-	c.addEventListener("change", function() {
-		colorPalette[i] = c.value;
-		l.textContent = colorPalette[i];
-		e.style.backgroundColor = colorPalette[i];
-		drawTodosLosPixels();
-	});
-}
-
 // todo: use `drawPixel'
 function drawPixelWithEvent(e) {
-	var coords = getMouseCoords(canvas, e);
+	const coords = getMouseCoords(canvas, e);
 
-	var xCoord = Math.floor(coords.x / canvasScale / pixelSize)
-	var yCoord = Math.floor(coords.y / canvasScale / pixelSize)
+	const xCoord = Math.floor(coords.x / canvasScale / pixelSize)
+	const yCoord = Math.floor(coords.y / canvasScale / pixelSize)
 	if (!canRedraw && pixelsDrawn[xCoord][yCoord] !== 0) { return }
-	var startX = xCoord * pixelSize;
-	var startY = yCoord * pixelSize;
+	const startX = xCoord * pixelSize;
+	const startY = yCoord * pixelSize;
 
-	var checkedColor = document.querySelector("input[name='color']:checked").value;
-	var colorNum = parseInt(checkedColor, 10);
-	var color = colorPalette[colorNum];
+	const checkedColor = document.querySelector("input[name='color']:checked").value;
+	const colorNum = parseInt(checkedColor, 10);
+	const color = colorPalette[colorNum];
 
 	ctx.beginPath();
 	ctx.rect(startX, startY, pixelSize, pixelSize);
@@ -145,8 +134,8 @@ function drawPixelWithEvent(e) {
 }
 
 function drawPixel(x, y, color) {
-	var startX = x * pixelSize;
-	var startY = y * pixelSize;
+	const startX = x * pixelSize;
+	const startY = y * pixelSize;
 	ctx.beginPath();
 	ctx.rect(startX, startY, pixelSize, pixelSize);
 	ctx.fillStyle = color;
@@ -176,16 +165,6 @@ function drawTodosLosPixels() {
 	drawGrid();
 }
 
-canvas.addEventListener("mousemove", function(e) {
-	if (isClickingOnCanvas) { drawPixelWithEvent(e); }
-});
-
-canvas.addEventListener("click", function(e) {
-	drawPixelWithEvent(e);
-});
-
-drawTodosLosPixels();
-
 function padNumber(n, zeros) {
 	let str = "";
 	const nStr = n.toString();
@@ -196,8 +175,6 @@ function padNumber(n, zeros) {
 	return str + nStr;
 }
 
-// currently broken/not done
-// wait, is that still true?
 function exportImage() {
 	let chunks = [];
 	for (let y = 0; y < pixelsDrawn.length; y++) {
@@ -218,12 +195,6 @@ function exportImage() {
 			const bits = padNumber(colorNum.toString(2), 2).split("");
 			chunks[row][col * 2] += bits[1];
 			chunks[row][col * 2 + 1] += bits[0];
-
-			
-			//row.reduce(function(daByte, pixel) {
-				//const binColorNum = padNumber(pixel, 2);
-				//return daByte;
-			//}, ["", ""]);
 		}
 	}
 
@@ -241,26 +212,25 @@ function exportImage() {
 			imageData += "\n";
 		}
 	}
-	//for (let y = 0; y < pixelsDrawn[0].length; y += 8) {
-		//for (let x = 0; x < pixelsDrawn[0].length; x += 2) {
-			//imageData += ".db ";
-			//for (let yy = 0; yy < 8; yy++) {
-				//imageData += "$" + padNumber(parseInt(chunks[y][x], 2).toString(16), 2) + ", ";
-				//imageData += "$" + padNumber(parseInt(chunks[y][x + 1], 2).toString(16), 2) + ", ";
-			//}
-			//imageData = imageData.slice(0, imageData.length - 2);
-			//imageData += "\n";
-		//}
-	//}
 
 	return imageData;
 }
-//exportImage();
 
-const saveButton = document.getElementById("save-drawing");
-saveButton.addEventListener("click", function() {
-	// todo: save color palette too
-	updateSavedStatus(true)
-	setSetting("drawing", pixelsDrawn);
-});
+function isRetinaDisplay() {
+	if (window.matchMedia) {
+		const mq = window.matchMedia("only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen  and (min-device-pixel-ratio: 1.3), only screen and (min-resolution: 1.3dppx)");
+		return (mq && mq.matches || (window.devicePixelRatio > 1)); 
+	}
+}
+
+function getMouseCoords(canvas, e) {
+	const rect = canvas.getBoundingClientRect();
+	return {
+		x: (e.clientX-rect.left)/(rect.right-rect.left)*canvas.width,
+		y: (e.clientY-rect.top)/(rect.bottom-rect.top)*canvas.height
+	}
+}
+
+updateSavedStatus(true);
+drawTodosLosPixels();
 

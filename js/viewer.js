@@ -72,7 +72,7 @@ for (var i = 0; i < lines.length; i++) {
 }
 
 var easel = document.getElementById("easel");
-var ctx = easel.getContext("2d");
+var viewerCtx = easel.getContext("2d");
 
 var pixelScale = 1;
 
@@ -84,7 +84,7 @@ for (var i = 0; i < pixels.length; i++) {
 		var row = tile[j];
 		for (var k = 0; k < row.length; k++) {
 			var pixel = row[k];
-			var id = ctx.createImageData(pixelScale, pixelScale);
+			var id = viewerCtx.createImageData(pixelScale, pixelScale);
 			id.data[0] = colors[pixel][0];
 			id.data[1] = colors[pixel][1];
 			id.data[2] = colors[pixel][2];
@@ -93,7 +93,7 @@ for (var i = 0; i < pixels.length; i++) {
 			var x = tile_pos_x * 8 * pixelScale + k * pixelScale;
 			var y = tile_pos_y * 8 * pixelScale + j * pixelScale;
 			
-			ctx.putImageData(id, x, y);
+			viewerCtx.putImageData(id, x, y);
 		}
 	}
 	tile_pos_x++;

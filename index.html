@@ -75,7 +75,7 @@ UntitledPalette:
 					<div class="easel">
 						<canvas id="editor"></canvas>
 					</div>
-					<div class="color-pallete">
+					<div class="color-palette">
 						<h3 class="current-color-heading">Current color</h3>
 						<form id="color-picker">
 							<ul>
@@ -114,7 +114,7 @@ UntitledPalette:
 								</li>
 							</ul>
 						</form>
-					</div><!-- end .color-pallete -->
+					</div><!-- end .color-palette -->
 				</div>
 
 				<div class="controls">
@@ -140,21 +140,21 @@ UntitledPalette:
 	<script src="js/editor.js"></script>
 	<script>
 
-	var showViewer = document.getElementById("show-img-viewer");
-	var showEditor = document.getElementById("show-img-editor");
-	var viewer = document.getElementById("img-viewer");
-	var editor = document.getElementById("img-editor");
+	let showViewer = document.getElementById("show-img-viewer");
+	let showEditor = document.getElementById("show-img-editor");
+	let viewerTab = document.getElementById("img-viewer");
+	let editorTab = document.getElementById("img-editor");
 
 	function showImgViewer(bool) {
 		if (bool) {
-			viewer.hidden = false;
-			editor.hidden = true;
+			viewerTab.hidden = false;
+			editorTab.hidden = true;
 			showViewer.checked = true;
 			showEditor.checked = false;
 			setSetting("lastTab", "viewer");
 		} else {
-			viewer.hidden = true;
-			editor.hidden = false;
+			viewerTab.hidden = true;
+			editorTab.hidden = false;
 			showEditor.checked = true;
 			showViewer.checked = false;
 			setSetting("lastTab", "editor");
